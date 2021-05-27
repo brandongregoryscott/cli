@@ -1,14 +1,7 @@
-// -----------------------------------------------------------------------------------------
-// #region Imports
-// -----------------------------------------------------------------------------------------
-
 import { CollectionUtils, StringUtils } from "andculturecode-javascript-core";
-import echo from "and-cli/modules/echo";
+import { Echo, OptionStringBuilder } from "and-cli";
 import jsonfile from "jsonfile";
-import optionStringFactory from "and-cli/utilities/option-string-factory";
 import shell from "shelljs";
-
-// #endregion Imports
 
 // -----------------------------------------------------------------------------------------
 // #region Variables
@@ -35,13 +28,13 @@ const JsonAlphabetize = {
         return "Alphabetizes a json file by a certain key";
     },
     getOptions() {
-        return optionStringFactory.build("alphabetize [files]", "a");
+        return new OptionStringBuilder("alphabetize [files]", "a");
     },
     getInplaceOptions() {
-        return optionStringFactory.build("in-place", "i");
+        return new OptionStringBuilder("in-place", "i");
     },
     getKeyOptions() {
-        return optionStringFactory.build("key <key>", "k");
+        return new OptionStringBuilder("key <key>", "k");
     },
     inplaceDescription() {
         return "Modify the file in-place instead of creating a new file with a timestamp.";
@@ -51,7 +44,7 @@ const JsonAlphabetize = {
     },
     run(files?: string[]) {
         if (CollectionUtils.isEmpty(files)) {
-            echo.error("No file(s) specified.");
+            Echo.error("No file(s) specified.");
             shell.exit(0);
         }
         const timestamp = new Date().toISOString();
@@ -62,7 +55,7 @@ const JsonAlphabetize = {
                 ""
             )}.${timestamp}.json`;
             if (_inplace != null && _inplace) {
-                echo.message(`Modifying file ${inputFilename} in-place.`);
+                Echo.message(`Modifying file ${inputFilename} in-place.`);
                 outputFilename = inputFilename;
             }
 
@@ -71,7 +64,7 @@ const JsonAlphabetize = {
                 ? _sortArray(parsedFile)
                 : _sortObjectByKeys(parsedFile);
 
-            echo.success(
+            Echo.success(
                 `Finished alphabetizing '${inputFilename}', writing file to '${outputFilename}' ...`
             );
             shell.touch(outputFilename);

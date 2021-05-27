@@ -1,26 +1,17 @@
 #!/usr/bin/env node
 
-// -----------------------------------------------------------------------------------------
-// #region Imports
-// -----------------------------------------------------------------------------------------
-
-import commandRegistry from "and-cli/modules/command-registry";
-import packageConfig from "and-cli/modules/package-config";
-import program from "and-cli";
-
-// #endregion Imports
+import { CommandRegistry, PackageConfig, program } from "and-cli";
 
 // -----------------------------------------------------------------------------------------
 // #region Entrypoint
 // -----------------------------------------------------------------------------------------
 
-const { description } = packageConfig.getLocal();
+const { description } = PackageConfig.getLocal();
 program.description(description);
 
 // Register all of the base commands from the and-cli with this application
-commandRegistry
-    .registerBaseCommands()
-    .registerCommand({
+CommandRegistry.registerAllBase()
+    .register({
         command: "json",
         description: "Commands to manipulate json files",
     })

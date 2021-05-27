@@ -1,16 +1,10 @@
 #!/usr/bin/env node
 
-// -----------------------------------------------------------------------------------------
-// #region Imports
-// -----------------------------------------------------------------------------------------
-
 import { JsonAlphabetize } from "./modules/json-alphabetize";
 import { JsonList } from "./modules/json-list";
-import program from "and-cli";
+import { program, CommandRunner } from "and-cli";
 
-// #endregion Imports
-
-require("and-cli/command-runner").run(async () => {
+CommandRunner.run(async () => {
     // -----------------------------------------------------------------------------------------
     // #region Entrypoint
     // -----------------------------------------------------------------------------------------
@@ -18,16 +12,16 @@ require("and-cli/command-runner").run(async () => {
     program
         .usage("option(s)")
         .description("Commands for listing, processing, etc. json files")
-        .option(JsonAlphabetize.getOptions(), JsonAlphabetize.description())
+        .option(JsonAlphabetize.getOptions().toString(), JsonAlphabetize.description())
         .option(
-            JsonAlphabetize.getInplaceOptions(),
+            JsonAlphabetize.getInplaceOptions().toString(),
             JsonAlphabetize.inplaceDescription()
         )
         .option(
-            JsonAlphabetize.getKeyOptions(),
+            JsonAlphabetize.getKeyOptions().toString(),
             JsonAlphabetize.keyDescription()
         )
-        .option(JsonList.getOptions(), JsonList.description())
+        .option(JsonList.getOptions().toString(), JsonList.description())
         .parse(process.argv);
 
     if (program.alphabetize) {

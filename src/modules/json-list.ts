@@ -1,14 +1,6 @@
-// -----------------------------------------------------------------------------------------
-// #region Imports
-// -----------------------------------------------------------------------------------------
-
-import { NODE_MODULES } from "and-cli/modules/constants";
+import { Constants, Echo, OptionStringBuilder } from "and-cli";
 import { StringUtils } from "andculturecode-javascript-core";
-import echo from "and-cli/modules/echo";
-import optionStringFactory from "and-cli/utilities/option-string-factory";
 import shell from "shelljs";
-
-// #endregion Imports
 
 // -----------------------------------------------------------------------------------------
 // #region Functions
@@ -19,18 +11,18 @@ const JsonList = {
         return `Lists json files in the specified directory (defaults to pwd - ${shell.pwd()})`;
     },
     getOptions() {
-        return optionStringFactory.build("list [dir]", "l");
+        return new OptionStringBuilder("list [dir]", "l");
     },
     run(dir?: string) {
         if (StringUtils.isEmpty(dir)) {
             dir = shell.pwd();
         }
 
-        echo.message(`Listing json files in ${dir}`);
+        Echo.message(`Listing json files in ${dir}`);
 
         const jsonFiles = shell
             .ls("-R", [dir!])
-            .filter((file) => !file.includes(NODE_MODULES))
+            .filter((file) => !file.includes(Constants.NODE_MODULES))
             .filter((file) => file.endsWith(".json"));
 
         jsonFiles.forEach((jsonFile) => console.log(jsonFile));
